@@ -90,3 +90,36 @@ tabela <- tabela[with(tabela,order(-Freq)),]
 tabela <- tabela[1:10,]
 pie(tabela$Freq, labels = tabela$d)
 ```
+```{r message=FALSE, warning=FALSE}
+data_morte <- as.Date(dataset_casosbauru_mortes$data_obito[complete.cases(dataset_casosbauru_mortes$data_obito)], format = "%d/%m/%Y")
+df <- as.data.frame(table(data_morte))
+df$data_morte <- as.Date(df$data_morte)
+df_ano <- df %>% mutate(year = format(data_morte, "%Y")) %>% 
+  group_by(year) %>% summarise(total = sum(Freq))
+df_anos <- df %>% mutate(month = format(data_morte, "%m"), year = format(data_morte, "%Y")) %>% 
+  group_by(month,year) %>% summarise(total = sum(Freq))
+df_2020 <- filter(df_anos, year == 2020)
+df_2021 <- filter(df_anos, year == 2021)
+df_2022 <- filter(df_anos, year == 2022)
+df_geral <- c(df_2020,df_2021,df_2022)
+
+ggplot(data = df_ano) +
+  geom_col(aes(y = total, x = year)) +
+  ggtitle(paste("Total de casos anuais")) +
+  theme(plot.title = element_text(hjust = 0.5))
+
+ggplot(data = df_2020) +
+  geom_col(aes(y = total, x = month)) +
+  ggtitle(paste("Total de casos mensais: 2020")) +
+  theme(plot.title = element_text(hjust = 0.5))
+
+ggplot(data = df_2021) +
+  geom_col(aes(y = total, x = month)) +
+  ggtitle(paste("Total de casos mensais: 2021")) +
+  theme(plot.title = element_text(hjust = 0.5))
+
+ggplot(data = df_2022) +
+  geom_col(aes(y = total, x = month)) +
+  ggtitle(paste("Total de casos mensais: 2022")) +
+  theme(plot.title = element_text(hjust = 0.5))
+```
