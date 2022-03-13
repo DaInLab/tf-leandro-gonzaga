@@ -2,29 +2,91 @@
 title: "Covid 19 - Bauru"
 author: "Leandro"
 date: "13/03/2022"
-output: html_document
+output: html_document: default
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+Importando as bibliotecas necessárias. 
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(plotly)
+library(ggrepel)
+library(PerformanceAnalytics)
+library(reshape2)
+library(readxl)
+library("bbl")
+library("ggQC")
 ```
 
-## R Markdown
+Importando os dados.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r message=FALSE, warning=FALSE}
+dataset_casosbauru_geral <- read_delim("../dados/covid_19_bauru_casos_geral.csv",delim = ";")
+dataset_casosbauru_mortes <- read_delim("../dados/covid_19_bauru_mortes.csv",delim = ";")
 ```
 
-## Including Plots
+Classificação das variáveis:
 
-You can also embed plots, for example:
+dataset_casosbauru_geral:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+data_boletim: data de publicação do boletim epidemiológico. Formato dd/mm/aa. Variável continua. 
+casos_novos: número de novas infecções declaradas. Variável contínua.
+confirmacoes_total: Número total de casos novos detectados de Covid-19 até a data. Variável contínua.
+total_mortes: Número total de óbitos de Covid-19 até a data. Variável contínua.
+mortes_suspeitas: Número total de óbitos ocorridos até a data suspeitos se Covid-19 ou não. Variável contínua.
+aguardando_resultado: Número total de exames de Covid-19 aguardando confirmação até a data. Variável contínua.
+curados: Número total de pessoas que tiveram Covid-19 e estão curadas até a data. Variável contínua.
+negativos: Número total de pessoas que tiveram resultado negativo de exame de Covid-19 até a data. Variável contínua.
+vagas_uti_HE: Número de vagas de UTI oferecidas no hospital municipal dedicadas à covid para pacientes de Bauru. Variável contínua.
+vagas_uti_HE_ocupadas: Número de leitos de UTI ocupados no hospital municipal dedicadas à covid. Variável contínua.
+vagas_uti_regiao: Número de vagas de UTI oferecidas no hospital de referência regional dedicadas à covid para pacientes das cidades da região de Bauru.Variável contínua.
+vagas_uti_regiao_ocupadas: Número de leitos de UTI ocupados no hospital de referência regional dedicadas à covid para pacientes das cidades da região de Bauru.Variável contínua.
+mortes_espera_uti: Número de óbitos ocorridos em fila de espera para internação de covid-19. Variável contínua.
+
+dataset_casosbauru_mortes:
+
+data_boletim: data de publicação do boletim epidemiológico. Formato dd/mm/aa.  Variável contínua. 
+sexo: gênero do paciente. Categorias: masculino/feminino.  Variável qualitativa Nominal. 
+idade: idade do paciente. Variável continua em anos.
+inicio_sintoma: data de início dos sintomas da síndrome respiratória aguda grave (SRAG). Formato dd/mm/aa.  Variável qualitativa Nominal. 
+tipo_hosp: tipo de hospital. Categorias: público / privado.  Variável qualitativa Nominal. 
+comorbidade: doenças graves do paciente. Texto com as doenças preexistentes separadas pela conjunção "e".  Variável qualitativa Nominal. 
+data_obito: data declarada do óbito do paciente. Formato dd/mm/aa.  Variável qualitativa Nominal. 
+doses_vacina: número de doses tomadas pelo paciente até a data de óbito. Variável qualitativa Nominal. 
+
+1)
+
+```{r message=FALSE, warning=FALSE}
+k <- nclass.Sturges(dataset_casosbauru_mortes$idade)
+AT <- max(dataset_casosbauru_mortes$idade[complete.cases(dataset_casosbauru_mortes$idade)]) - min(dataset_casosbauru_mortes$idade[complete.cases(dataset_casosbauru_mortes$idade)]) 
+h <- ceiling(AT/k)
+infclass <- min(dataset_casosbauru_mortes$idade[complete.cases(dataset_casosbauru_mortes$idade)]) 
+supclass <- infclass + (k * h)
+brk <- seq(infclass,supclass,h)
+
+frequencia <- table(cut(dataset_casosbauru_mortes$idade[complete.cases(dataset_casosbauru_mortes$idade)], breaks = brk, right = FALSE))
+
+
+hist(dataset_casosbauru_mortes$idade[complete.cases(dataset_casosbauru_mortes$idade)],  
+     main = "Mortes por COVID em Bauru (Distribuição por faixa etária)", 
+     xlab = "Idade", ylab = "Nº de mortes", 
+     col = c("blue"), 
+     border = c("lightblue"),
+     breaks = brk,
+     right = FALSE,
+     axes = FALSE
+     )
+axis(1, at=seq(infclass,supclass,h))
+axis(2, at=seq(0,max(frequencia),2))
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r message=FALSE, warning=FALSE}
+x <- c(dataset_casosbauru_mortes$comorbidade[complete.cases(dataset_casosbauru_mortes$comorbidade)])
+t <- strsplit(x," e ")
+d <- unlist(t)
+tabela <- as.data.frame(table(d))
+tabela <- tabela[with(tabela,order(-Freq)),]
+tabela <- tabela[1:10,]
+pie(tabela$Freq, labels = tabela$d)
+```
