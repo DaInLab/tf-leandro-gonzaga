@@ -2,7 +2,9 @@
 title: "Covid 19 - Bauru"
 author: "Leandro"
 date: "13/03/2022"
-output: html_document: default
+output:
+  html_document: default
+  'html_document: default': default
 ---
 
 Importando as bibliotecas necessárias. 
@@ -16,6 +18,7 @@ library(reshape2)
 library(readxl)
 library("bbl")
 library("ggQC")
+library(rmarkdown)
 ```
 
 Importando os dados.
@@ -122,4 +125,6 @@ ggplot(data = df_2022) +
   geom_col(aes(y = total, x = month)) +
   ggtitle(paste("Total de casos mensais: 2022")) +
   theme(plot.title = element_text(hjust = 0.5))
+
 ```
+
