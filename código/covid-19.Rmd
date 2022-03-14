@@ -1,13 +1,15 @@
 ---
-title: "Covid 19 - Bauru"
-author: "Leandro"
+title:  "Casos e óbitos por COVID 19 na cidade de Bauru"
+author: "Leandro Gonzaga RA: 191022748"
 date: "13/03/2022"
 output:
   html_document: default
   'html_document: default': default
 ---
+<b> Curso: Introducao a análise exploratória de dados </b>
 
-Importando as bibliotecas necessárias. 
+
+<p><b> Importando as bibliotecas necessárias. </b> </p>
 
 ```{r message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -21,44 +23,47 @@ library("ggQC")
 library(rmarkdown)
 ```
 
-Importando os dados.
+<p><b> Importando os dados. </b> </p>
 
 ```{r message=FALSE, warning=FALSE}
 dataset_casosbauru_geral <- read_delim("../dados/covid_19_bauru_casos_geral.csv",delim = ";")
 dataset_casosbauru_mortes <- read_delim("../dados/covid_19_bauru_mortes.csv",delim = ";")
 ```
 
-Classificação das variáveis:
+<p><b> Classificação das variáveis: </b> </p>
 
-dataset_casosbauru_geral:
+<p><b> dataset_casosbauru_geral: </b> </p>
 
-data_boletim: data de publicação do boletim epidemiológico. Formato dd/mm/aa. Variável continua. 
-casos_novos: número de novas infecções declaradas. Variável contínua.
-confirmacoes_total: Número total de casos novos detectados de Covid-19 até a data. Variável contínua.
-total_mortes: Número total de óbitos de Covid-19 até a data. Variável contínua.
-mortes_suspeitas: Número total de óbitos ocorridos até a data suspeitos se Covid-19 ou não. Variável contínua.
-aguardando_resultado: Número total de exames de Covid-19 aguardando confirmação até a data. Variável contínua.
-curados: Número total de pessoas que tiveram Covid-19 e estão curadas até a data. Variável contínua.
-negativos: Número total de pessoas que tiveram resultado negativo de exame de Covid-19 até a data. Variável contínua.
-vagas_uti_HE: Número de vagas de UTI oferecidas no hospital municipal dedicadas à covid para pacientes de Bauru. Variável contínua.
-vagas_uti_HE_ocupadas: Número de leitos de UTI ocupados no hospital municipal dedicadas à covid. Variável contínua.
-vagas_uti_regiao: Número de vagas de UTI oferecidas no hospital de referência regional dedicadas à covid para pacientes das cidades da região de Bauru.Variável contínua.
-vagas_uti_regiao_ocupadas: Número de leitos de UTI ocupados no hospital de referência regional dedicadas à covid para pacientes das cidades da região de Bauru.Variável contínua.
-mortes_espera_uti: Número de óbitos ocorridos em fila de espera para internação de covid-19. Variável contínua.
+<b> data_boletim </b>: data de publicação do boletim epidemiológico. Formato dd/mm/aa. Variável continua. 
+<b> casos_novos </b>: número de novas infecções declaradas. Variável contínua.
+<b> confirmacoes_total </b>: Número total de casos novos detectados de Covid-19 até a data. Variável contínua.
+<b> total_mortes </b>: Número total de óbitos de Covid-19 até a data. Variável contínua.
+<b> mortes_suspeitas </b>: Número total de óbitos ocorridos até a data suspeitos se Covid-19 ou não. Variável contínua.
+<b> aguardando_resultado </b>: Número total de exames de Covid-19 aguardando confirmação até a data. Variável contínua.
+<b> curados </b>: Número total de pessoas que tiveram Covid-19 e estão curadas até a data.Variável contínua.
+<b> negativos </b>: Número total de pessoas que tiveram resultado negativo de exame de Covid-19 até a data. Variável contínua.
+<b> vagas_uti_HE </b>: Número de vagas de UTI oferecidas no hospital municipal dedicadas à covid para pacientes de Bauru. Variável contínua.
+<b> vagas_uti_HE_ocupadas </b>: Número de leitos de UTI ocupados no hospital municipal dedicadas à covid. Variável contínua.
+<b> vagas_uti_regiao </b>: Número de vagas de UTI oferecidas no hospital de referência regional dedicadas à covid para pacientes das cidades da região de Bauru.Variável contínua.
+<b> vagas_uti_regiao_ocupada </b>: Número de leitos de UTI ocupados no hospital de referência regional dedicadas à covid para pacientes das cidades da região de Bauru.Variável contínua.
+<b> mortes_espera_uti </b>: Número de óbitos ocorridos em fila de espera para internação de covid-19. Variável contínua.
 
-dataset_casosbauru_mortes:
 
-data_boletim: data de publicação do boletim epidemiológico. Formato dd/mm/aa.  Variável contínua. 
-sexo: gênero do paciente. Categorias: masculino/feminino.  Variável qualitativa Nominal. 
-idade: idade do paciente. Variável continua em anos.
-inicio_sintoma: data de início dos sintomas da síndrome respiratória aguda grave (SRAG). Formato dd/mm/aa.  Variável qualitativa Nominal. 
-tipo_hosp: tipo de hospital. Categorias: público / privado.  Variável qualitativa Nominal. 
-comorbidade: doenças graves do paciente. Texto com as doenças preexistentes separadas pela conjunção "e".  Variável qualitativa Nominal. 
-data_obito: data declarada do óbito do paciente. Formato dd/mm/aa.  Variável qualitativa Nominal. 
-doses_vacina: número de doses tomadas pelo paciente até a data de óbito. Variável qualitativa Nominal. 
+<p><b> dataset_casosbauru_mortes: </b> </p>
 
-1)
+<b> data_boletim </b>: data de publicação do boletim epidemiológico. Formato dd/mm/aa.  Variável contínua. 
+<b> sexo </b>: gênero do paciente. Categorias: masculino/feminino.  Variável qualitativa Nominal. 
+<b> idade </b>: idade do paciente. Variável continua em anos.
+<b> inicio_sintoma </b>: data de início dos sintomas da síndrome respiratória aguda grave (SRAG). Formato dd/mm/aa.  Variável qualitativa Nominal. 
+<b> tipo_hosp </b>: tipo de hospital. Categorias: público / privado.  Variável qualitativa Nominal. 
+<b> comorbidade </b>: doenças graves do paciente. Texto com as doenças preexistentes separadas pela conjunção "e".  Variável qualitativa Nominal. 
+<b> data_obito </b>: data declarada do óbito do paciente. Formato dd/mm/aa.  Variável qualitativa Nominal. 
+<b> doses_vacina </b>: número de doses tomadas pelo paciente até a data de óbito. Variável qualitativa Nominal. 
 
+<h3><b> 1) Análise do número de óbitos em relação a faixa etária. </b> </h3>
+
+Para mensuração do número de óbitos em relação a idade da população o ROL apresentado
+foi dividido em faixas etárias de 9 em 9 anos. 
 ```{r message=FALSE, warning=FALSE}
 k <- nclass.Sturges(dataset_casosbauru_mortes$idade)
 AT <- max(dataset_casosbauru_mortes$idade[complete.cases(dataset_casosbauru_mortes$idade)]) - min(dataset_casosbauru_mortes$idade[complete.cases(dataset_casosbauru_mortes$idade)]) 
@@ -84,6 +89,14 @@ axis(2, at=seq(0,max(frequencia),2))
 
 ```
 
+Analisando os resultados observa-se um aumento gradativo do número de óbitos conforme
+a idade do paciente aumenta. Observa-se portanto que a população mais idosa é mais
+vulnerável a complicações e óbito para a infecção de COVID-19 em Bauru. 
+
+<h3><b> 2) Análise do número de óbitos em relação a patologias associadas. </b> </h3>
+
+Para mensuração das patologias associadas aos óbitos referentes a COVID 19, o diagonóstico de cada paciente foi segregado por patologia, sendo possível dessa forma agrupá-las afim de caracterizar sua importância na complicação do quadro. Devido ao grande número de patologias abordadas, foi necessário segregar no gráfico apenas as 10 com maior número de ocorrências por paciente. Dessa forma é possível garantir a clareza nas observações e limpeza visual. 
+
 ```{r message=FALSE, warning=FALSE}
 x <- c(dataset_casosbauru_mortes$comorbidade[complete.cases(dataset_casosbauru_mortes$comorbidade)])
 t <- strsplit(x," e ")
@@ -93,6 +106,13 @@ tabela <- tabela[with(tabela,order(-Freq)),]
 tabela <- tabela[1:10,]
 pie(tabela$Freq, labels = tabela$d)
 ```
+
+Analisando os resultado é possível perceber que doenças que acometem de forma mais direta o sistema circulatório são as que mais podem apresentar complicações quando somada a infecção por SARS-COV. Sâo elas: Diabetes, hipertensão, doenças cardíacas e obesidade. Logo o resultado apresentado na população de Bauru condiz com as orientações do ministério da saúde sobre os cuidados de pessoas riscos (as quais apresentam algumas dessas doenças).
+
+<h3><b> 3) Análise do número de óbitos em decorrer dos anos 2020,2021 e 2022. </b> </h3>
+
+Para mensuração do impacto no número de óbitos e da evolução da doença COVID-19, foram elaborados quatro gráficos comparativos. O primeiro aborda a comparação no valor total entre os anos de 2020 á 2022. Os três consecutivos aborda a comparação mês a mês da evolução no número de mortes. 
+
 ```{r message=FALSE, warning=FALSE}
 data_morte <- as.Date(dataset_casosbauru_mortes$data_obito[complete.cases(dataset_casosbauru_mortes$data_obito)], format = "%d/%m/%Y")
 df <- as.data.frame(table(data_morte))
@@ -105,6 +125,8 @@ df_2020 <- filter(df_anos, year == 2020)
 df_2021 <- filter(df_anos, year == 2021)
 df_2022 <- filter(df_anos, year == 2022)
 df_geral <- c(df_2020,df_2021,df_2022)
+
+df_ano <- df_ano %>%  filter(year >= 2020)
 
 ggplot(data = df_ano) +
   geom_col(aes(y = total, x = year)) +
@@ -128,3 +150,30 @@ ggplot(data = df_2022) +
 
 ```
 
+Analisando os gráficos obtidos é possível observar que a grande explosão no número de casos ocorreu no ano de 2021. Nesse ano observa-se uma evolução gradativa no número de óbitos, atigindo ápices entre março e junho. Após essa data, observa-se uma gradativa diminuição nesses valores, chegano ao mínimo observado (em 2021) em dezembro. Voltamos a observa um crescimento do número de casos no começo do ano de 2022, porém novamente observa-se o decaimento desses números. Possíveis explicações para o decaimento durante os períodos são: um maior rigor nas medidas protetivas adotadas na cidade, como também o ínicio do ciclo de vacinação. Esse primeiro não será possivel uma observação mais aprofundada nesse estudo devido a falta de dados nesse quesito, já quanto a vacinação, será corroborada no gráfico a seguir. 
+
+
+<h3><b> 4) Análise do número de óbitos e vacinados. </b> </h3>
+
+Para mensuração do número de óbitos e a sua relação com vacinados foi elaborado um gráfico de barras constando a evolução no número de óbitos no ocorrer dos anos da infecção. A partir de janeiro de 2022 foi elaborado um gráfico sobreposto (bordas vermelhas) para identificar, dentro do ROL de dados, aqueles pacientes que apresentaram ao menos a primeira dose de vacinação. 
+
+```{r message=FALSE, warning=FALSE}
+dataset_mortes_vacinados <- dataset_casosbauru_mortes %>% select("data_obito")
+dataset_mortes_vacinados$data_obito <- as.Date(dataset_mortes_vacinados$data_obito, format = "%d/%m/%Y")
+dataset_mortes_vacinados <- dataset_mortes_vacinados %>% mutate(caso = 1) %>% 
+mutate(month_year = as.yearmon(data_obito)) %>% group_by(month_year) %>% summarise(total = sum(caso, na.rm = TRUE)) 
+dataset_mortes_vacinados <- dataset_mortes_vacinados %>% filter (month_year > 2020)
+
+dataset_mortes_vacinados2 <- dataset_casosbauru_mortes %>%  filter( doses_vacina != 0) %>%  select("data_obito")
+dataset_mortes_vacinados2$data_obito <- as.Date(dataset_mortes_vacinados2$data_obito, format = "%d/%m/%Y")
+dataset_mortes_vacinados2 <- dataset_mortes_vacinados2 %>% mutate(caso = 1) %>% 
+mutate(month_year = as.yearmon(data_obito)) %>% group_by(month_year) %>% summarise(total = sum(caso, na.rm = TRUE)) 
+dataset_mortes_vacinados2 <- dataset_mortes_vacinados2 %>% filter (month_year > 2020)
+
+ggplot(NULL) +
+  geom_col(data = dataset_mortes_vacinados, aes(y = total, x = month_year)) +
+  geom_col(data = dataset_mortes_vacinados2, aes(x = month_year, y = total), colour="red") 
+  
+```
+
+Para podermos ter uma clareza melhor do impacto da vacinação na diminuição do número de mortes por COVID 19, precisaríamos de uma base de dados com a quantidade total de vacinados por período em relação a população. Também seria necessário verificar tempestivamente o início do ciclo vacinal, pois na base fornecida os dados foram para das vacinas foram adicionados apenas a partir de janeiro de 2022. Como não tais dados em mãos, é possível observa com o gráfico acima, de forma comparativa, os números totais entre os períodos de janeiro, fevereiro e março, entre os anos de 2021 e 2022. Nessa comparação vimos uma considerável diminuição de casos, nas mortes por covid 19. Ainda sim, vemos que aqueles que possue ao menos uma dose de vacinação compõe uma grande parte dos dados dos meses de janeiro, fevereiro e março de 2022. Porém, é importante salientar que, analisando os dados de doenças associadas, a maioria dos pacientes observadores apresentam doenças associadas. Logo, dispondo dos dados, é possível observar o impacto pela queda no número de mortes, como também que os cuidados paleativos para grupos de risco ainda são necessários no enfrentamento da doença.  
